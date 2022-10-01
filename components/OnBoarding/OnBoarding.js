@@ -1,12 +1,13 @@
 import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, FlatList, Animated } from 'react-native';
-import OnBoardingItem from '../components/OnBoardingItem';
-import slides from '../slides';
-import Paginator from './Paginator';
-import NextButton from './NextButton';
+import OnBoardingItem from '../../components/OnBoarding/OnBoardingItem';
+import slides from '../../components/OnBoarding/slides';
+import Paginator from '../../components/OnBoarding/Paginator';
+import NextButton from '../../components/OnBoarding/NextButton';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-export default OnBoarding = () => {
+const OnBoarding = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const scrollX = useRef(new Animated.Value(0)).current;
     const slidesRef = useRef(null);
@@ -17,11 +18,15 @@ export default OnBoarding = () => {
 
     const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current;
 
-    const scrollTo = () => {
+    const scrollTo = async () => {
         if (currentIndex < slides.length - 1) {
             slidesRef.current.scrollToIndex({ index: currentIndex + 1});
         } else {
-            console.log('Ultimo slide');
+            try {
+                await AsyncStorage.setItem('@viewedOnBoarding', 'true');
+            } catch (err) {
+                console.log('Erro @setItem', err);
+            }
         }
     }
     
@@ -60,4 +65,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
 })
+
+export default OnBoarding;
     

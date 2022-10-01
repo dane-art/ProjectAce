@@ -34,8 +34,16 @@ export default NextButton = ({ percentage, scrollTo }) => {
                     strokeDashoffset
                 });
             }
-        }, [percentage]);
-    });
+        }, [percentage]
+        );
+
+        return () => {
+            progressAnimation.removeAllListeners();
+        };
+    }, []);
+
+    
+
 
     return (
         <View style={styles.container}>
@@ -44,7 +52,7 @@ export default NextButton = ({ percentage, scrollTo }) => {
                 />
                 <Circle 
                 ref={progressRef}
-                stroke="#F4338F" 
+                stroke="#666666" 
                 cx={center} 
                 cy={center} 
                 r={radius} 
@@ -68,7 +76,7 @@ const styles = StyleSheet.create({
 
     button: {
         position: 'absolute',
-        backgroundColor: '#f4338f',
+        backgroundColor: '#666666',
         borderRadius: 100,
         padding: 20,
     }
